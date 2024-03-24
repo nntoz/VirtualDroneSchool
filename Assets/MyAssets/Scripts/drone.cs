@@ -5,13 +5,13 @@ using UnityEngine;
 public class drone : MonoBehaviour
 {
     [Header("設定")]
-    public float BaseHoveringPow;
+    public float BaseHoveringPow;//ぽうっ！！　ホバリングに必要な力を最初に計算代入するための変数
     Rigidbody rb;
-    float Hovering;
-    public List<float> SpeedMode;
+    public float Hovering;//基本的にbasehoveringを代入、増減で上昇下降
+    public List<float> SpeedMode;//一つ以上入れないとエラーがはっせいいい
     public List<GameObject> Camera;
     public float Quality;
-    public GameObject HomePoint;
+    public GameObject HomePoint;//プロトタイプで戻る場所を指定するための変数
     public Animator DroneAnimator;
     [Header("状態")]
     public bool TakeOffModeFlag;
@@ -30,13 +30,17 @@ public class drone : MonoBehaviour
         rb = this.GetComponent<Rigidbody> ();
 
         BaseHoveringPow = Quality*9.81f;
-        Hovering = BaseHoveringPow;
         //最初のスピードを定義
         SpeedModeFlag=SpeedMode.Count/2;
         speed=SpeedMode[SpeedModeFlag];
     }
     void FixedUpdate()
     {
+        //何も操作が入力されていないときに初期位置(homepointに戻す)
+        if(!Input.anyKey){
+            //go back your home.
+            transform.position = Vector3.MoveTowards(transform.position, HomePoint.transform.position, 0.1f);
+        }
         //離陸モード変更
         if(Input.GetKeyDown(KeyCode.Space) && !restriction.Contains("離陸モード変更")){
             StartCoroutine(DelayAction(0.5f,"離陸"));
@@ -87,6 +91,9 @@ public class drone : MonoBehaviour
         else{
             RightHinput=0f;
         }
+        //inputの値を参照して貴様に力を与えよう
+        Hovering=BaseHoveringPow+LeftVinput*speed;
+        rb.AddForce (new Vector3 (0.0f,Hovering,0.0f));
     }
     void Update()
     {
