@@ -25,6 +25,8 @@ public class drone : MonoBehaviour
     public float RightHinput;
     [Header("機能制限")]
     public List<string> restriction;
+    [Header("デバッグ用")]
+    public bool backhomepoint =true;
     void Start()
     {
         rb = this.GetComponent<Rigidbody> ();
@@ -37,7 +39,7 @@ public class drone : MonoBehaviour
     void FixedUpdate()
     {
         //何も操作が入力されていないときに初期位置(homepointに戻す)
-        if(!Input.anyKey){
+        if(!Input.anyKey&&backhomepoint){
             //go back your home.
             transform.position = Vector3.MoveTowards(transform.position, HomePoint.transform.position, 0.1f);
         }
