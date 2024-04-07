@@ -94,8 +94,11 @@ public class drone : MonoBehaviour
             RightHinput=0f;
         }
         //inputの値を参照して貴様に力を与えよう
-        Hovering=BaseHoveringPow+LeftVinput*speed;
-        rb.AddForce (new Vector3 (0.0f,Hovering,0.0f));
+        Hovering=BaseHoveringPow+LeftVinput*Quality*speed;
+        rb.AddForce (new Vector3(0.0f,Hovering,0.0f), ForceMode.Force);
+        rb.AddForce(transform.forward*Quality*speed*-RightVinput, ForceMode.Force);
+        rb.AddForce(transform.right*Quality*speed*-RightHinput, ForceMode.Force);
+        rb.AddTorque(new Vector3(0, LeftHinput*speed, 0), ForceMode.Acceleration);
     }
     void Update()
     {
