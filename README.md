@@ -1,6 +1,6 @@
 # VirtualDroneSchool - 学習に特化したフライトシミュレータ
 
-![gif](https://github.com/nanisotu/VirtualDroneSchool/tree/main/reedme/demo.gif)
+![gif](./reedme/demo.gif)
 
 ## OverView
 
